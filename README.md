@@ -17,6 +17,8 @@
 | 启用 / 停用 | 写入 profile 的 `cordis.patch.yml`（id 定向 `disabled` 覆盖行），dsh 的 patch HMR **热生效**，无需重启 |
 | 移除插件 | 删除补丁行 + `pnpm remove` 卸载依赖 + 从 `dsh.profile.bundles` 移除 |
 | 导入插件 | `pnpm add` 装入 profile：`git+https://…​.git`、`github:owner/repo`、`https://github.com/owner/repo`、npm 包名、`http(s)://…​.tgz`、`file:./路径` / 绝对路径 |
+| 记录来源与版本 | 持久化 registry（`<profile>/.dsh-plugin-manager.json`）记录每个插件的 `source / url / kind / installedAt / lastVersion`，state 一并返回（已装插件按依赖 spec 自动回填 url） |
+| 更新 / 切换 | `update`：重新 `pnpm add` 拉取最新（git 插件更新到远端 HEAD）；`switch`：按 tag/分支/commit（git）或版本号（npm）切换；卡片上「更新」按钮 + 版本号点击切换 |
 | 服务器 API | `/api/plugin-manager/{state,toggle,import,remove}`（同源），可选 token 鉴权 |
 | 浮动快捷入口 | 右下角「🧩 插件管理」按钮（与设置页共用同一视图），配置 `fab: false` 可关闭 |
 
@@ -111,6 +113,7 @@ EOF
 ## UI 设计（视觉 + 交互）
 
 - **视觉**：渐变主按钮/FAB（蓝→紫）、卡片 hover 浮起 + 描边高亮、状态点发光（active 绿 / failed 红 / loading 脉冲）、圆角标签徽章（外部=橙、官方=蓝、已安装=绿）、骨架屏加载动画、toast 通知（成功/错误，自动消失）。
+- **官方插件折叠**：默认收起（仅标题行），点击箭头展开 40 行，可「展开全部」，再点收起（设置页与右下角 FAB 面板一致）。
 - **交互**：插件搜索 + 筛选 chips（全部/外部/官方）、官方列表折叠/展开、自定义确认弹窗（替代原生 confirm，支持 Esc）、开关/移除进行中置灰、导入按钮 loading 态、FAB 面板支持 Esc 关闭、Enter 直接导入。
 - 设置页 tab 与浮动 FAB 共用同一套视图与样式。
 
