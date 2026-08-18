@@ -138,12 +138,12 @@ EOF
 | 层 | 生效时机 |
 |---|---|
 | 服务端行 | **立即** —— patch HMR 热应用，导入/启停/移除后马上生效（`phase: active`） |
-| 浏览器端 half | **硬刷新即可**（Cmd+Shift+R）—— client-modules 增量扫描会把新客户端纳入 boot；无需重启 dsh web |
+| 浏览器端 half | **自动刷新** —— 导入/更新/切换/启停/移除含客户端 half 的插件后，面板弹提示并在 1.5 秒后自动刷新页面；client-modules 增量扫描会把新客户端纳入 boot，无需重启 dsh web |
 | 管理器自身代码更新 | 需**重启一次 dsh web**（运行中进程缓存旧模块） |
 
 ## 已知边界
 
-- 浏览器端 half 的新增/更新需要重启 dsh web 或硬刷新才进入 `__DSH_BOOT__`。
+- 浏览器端 half 的新增/更新由面板自动刷新页面加载；bundle-patch 插件仍需重启 dsh web 才进入 `__DSH_BOOT__`。
 - npm 注册表导入按 pnpm 语义解析；安装带 build script 的 git 依赖时若被拦截，
   管理器会自动写入 `allowBuilds` 并重跑 `pnpm rebuild`。
 - 禁用管理器自身被防护（`SELF_DISABLE`），需手动编辑补丁。
